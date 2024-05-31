@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="startup_dark">#5D4037</color>
+    <color name="startup_light">#F4F1EA</color>
+    <color name="primary_dark">#a8796b</color>
+    <color name="primary_light">#f4efed</color>
+</resources>

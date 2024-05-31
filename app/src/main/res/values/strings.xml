@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Board Game Buddy</string>
+    <string name="app_subtitle">Your board game companion app!</string>
+    <string name="logo_description">application logo</string>
+
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+</resources>
