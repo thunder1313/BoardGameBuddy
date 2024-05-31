@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                     auth.signOut()
                     recreate()
                 }
+                R.id.nav_your_games -> startActivity(Intent(this, YourGamesActivity::class.java))
             }
             true
         }

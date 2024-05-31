@@ -4,4 +4,8 @@
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_logout"
         android:title="Log out" />
+    <item
+        android:id="@+id/nav_your_games"
+        android:icon="@drawable/ic_favorite"
+        android:title="Your Games" />
 </menu>
