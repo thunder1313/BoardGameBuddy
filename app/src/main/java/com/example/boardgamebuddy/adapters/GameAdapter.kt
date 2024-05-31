@@ -1,5 +1,6 @@
 package com.example.boardgamebuddy.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.boardgamebuddy.R
 import com.example.boardgamebuddy.data.BoardGame
+import com.example.boardgamebuddy.ui.GameDetailActivity
 
-class GameAdapter(private val pkGameList: List<BoardGame>) : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+class GameAdapter(private val games: List<BoardGame>) : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
 
@@ -25,21 +27,20 @@ class GameAdapter(private val pkGameList: List<BoardGame>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val game = pkGameList[position]
+        val game = games[position]
 
         holder.gameNameTextView.text = game.name
         Glide.with(holder.itemView)
             .load(game.imageUrl)
             .into(holder.gameImageView)
 
-        // Set the click listener for the itemView
         holder.itemView.setOnClickListener {
             onClickListener?.onClick(position, game)
         }
     }
 
     override fun getItemCount(): Int {
-        return pkGameList.size
+        return games.size
     }
 
     fun setOnClickListener(onClickListener: OnClickListener) {

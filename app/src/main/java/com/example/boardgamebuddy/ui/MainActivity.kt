@@ -13,7 +13,6 @@ import com.google.android.material.navigation.NavigationView
 import com.example.boardgamebuddy.R
 import com.example.boardgamebuddy.adapters.GameAdapter
 import com.example.boardgamebuddy.data.BoardGame
-import com.example.boardgamebuddy.data.MockData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -52,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         // Setup RecyclerView
         listView = findViewById(R.id.gamesRecyclerView)
+        listView.layoutManager = GridLayoutManager(this, 1) // Assuming you want a grid layout
         fetchBoardGames()
 
         // Handle drawer toggle
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchBoardGames() {
-        db.collection("boardGames")
+        db.collection("BoardGames")
             .get()
             .addOnSuccessListener { result ->
                 val games = result.map { document -> document.toObject(BoardGame::class.java) }

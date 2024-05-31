@@ -1,4 +1,4 @@
-package com.example.boardgamebuddy.UI
+package com.example.boardgamebuddy.ui
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -11,6 +11,7 @@ import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.boardgamebuddy.R
+import com.example.boardgamebuddy.data.PopulateDatabase
 import com.example.boardgamebuddy.ui.MainActivity
 
 class StartActivity : AppCompatActivity() {
