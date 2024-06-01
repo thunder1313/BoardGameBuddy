@@ -2,6 +2,7 @@ package com.example.boardgamebuddy.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,12 +16,17 @@ import com.example.boardgamebuddy.data.BoardGame
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
 class GameDetailActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
+    private lateinit var userEmailTextView: TextView
+
     private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +40,8 @@ class GameDetailActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val navView = findViewById<NavigationView>(R.id.nav_view)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navView = findViewById(R.id.nav_view)
 
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
@@ -45,6 +51,13 @@ class GameDetailActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        // Setup navigation header
+        val headerView: View = navView.getHeaderView(0)
+        userEmailTextView = headerView.findViewById(R.id.user_email)
+
+        // Update header with current user's email
+        updateUserHeader(auth.currentUser)
+
         navView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout.closeDrawers()
@@ -53,9 +66,21 @@ class GameDetailActivity : AppCompatActivity() {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                 }
+                R.id.nav_logout -> {
+                    auth.signOut()
+                    recreate()
+                }
+                R.id.nav_your_games -> {
+                    val intent = Intent(this, YourGamesActivity::class.java)
+                    startActivity(intent)
+                }
+                // Add more navigation item handling as needed
             }
             true
         }
+
+        // Update drawer menu based on login status
+        updateDrawerMenu(auth.currentUser != null)
 
         // Retrieve the game ID from the intent
         val gameId = intent.getIntExtra("GAME_ID", -1)
@@ -143,6 +168,21 @@ class GameDetailActivity : AppCompatActivity() {
             fabFavorite.setImageResource(R.drawable.ic_favorite)
         } else {
             fabFavorite.setImageResource(R.drawable.ic_favorite_border)
+        }
+    }
+
+    private fun updateDrawerMenu(isLoggedIn: Boolean) {
+        val menuRes = if (isLoggedIn) R.menu.menu_logged_in else R.menu.menu_logged_out
+        navView.menu.clear()
+        navView.inflateMenu(menuRes)
+    }
+
+    private fun updateUserHeader(user: FirebaseUser?) {
+        if (user != null) {
+            userEmailTextView.text = user.email
+            userEmailTextView.visibility = View.VISIBLE
+        } else {
+            userEmailTextView.visibility = View.GONE
         }
     }
 }
