@@ -25,7 +25,7 @@
                 android:layout_height="60dp"
                 android:elevation="4dp"
                 android:background="@color/primary_dark"
-                android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar" />
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

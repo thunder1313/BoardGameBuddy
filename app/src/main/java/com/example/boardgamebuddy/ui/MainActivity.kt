@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         // Setup toolbar
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.title = "Games"
 
         // Setup drawer and navigation view
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_login -> startActivity(Intent(this, LoginActivity::class.java))
                 R.id.nav_logout -> {
                     auth.signOut()
+                    drawerLayout.closeDrawer(navView)
                     recreate()
                 }
                 R.id.nav_your_games -> startActivity(Intent(this, YourGamesActivity::class.java))
