@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.example.boardgamebuddy.R
 import com.example.boardgamebuddy.adapters.GameAdapter
@@ -25,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var listView: RecyclerView
     private lateinit var userEmailTextView: TextView
+    private lateinit var fab: FloatingActionButton
+    private val ADD_GAME_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +85,16 @@ class MainActivity : AppCompatActivity() {
 
         // Update drawer menu based on login status
         updateDrawerMenu(auth.currentUser != null)
+
+        // Setup FloatingActionButton
+        fab = findViewById(R.id.fab)
+        fab.setOnClickListener {
+            if (auth.currentUser != null) {
+                startActivityForResult(Intent(this, AddGameActivity::class.java), ADD_GAME_REQUEST_CODE)
+            } else {
+                Toast.makeText(this, "Please log in to use this feature", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onStart() {
@@ -133,6 +147,14 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(navView)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ADD_GAME_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Refresh the data or fetch new data from the database
+            fetchBoardGames()
         }
     }
 }

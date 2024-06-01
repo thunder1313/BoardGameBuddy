@@ -89,7 +89,7 @@ class GameDetailActivity : AppCompatActivity() {
         if (gameId != -1) {
             fetchBoardGame(gameId)
             setupFavoriteButton(gameId)
-            setupCollectionButton(gameId)  // Setup collection button
+            setupCollectionButton(gameId)
         } else {
             Toast.makeText(this, "Error loading game details", Toast.LENGTH_SHORT).show()
         }
@@ -114,10 +114,15 @@ class GameDetailActivity : AppCompatActivity() {
     private fun updateUI(game: BoardGame) {
         supportActionBar?.title = game.name
 
-        // Load image
         val detailImage = findViewById<ImageView>(R.id.detailImage)
         Glide.with(this).load(game.imageUrl).into(detailImage)
-        // Load description
+
+        val detailDesigner = findViewById<TextView>(R.id.detailDesigner)
+        detailDesigner.text = "Designed by ${game.designer}"
+
+        val detailMaxPlayers = findViewById<TextView>(R.id.detailMaxPlayers)
+        detailMaxPlayers.text = "Max Players: ${game.maxPlayers}"
+
         val detailDescription = findViewById<TextView>(R.id.detailDescription)
         detailDescription.text = game.description
     }

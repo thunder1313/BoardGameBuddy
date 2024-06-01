@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edit_text_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Game Name" />
+
+    <EditText
+        android:id="@+id/edit_text_max_players"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max Players"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/edit_text_designer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Designer" />
+
+    <EditText
+        android:id="@+id/edit_text_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description" />
+
+    <EditText
+        android:id="@+id/edit_text_image_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Image URL" />
+
+    <Button
+        android:id="@+id/button_add_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/startup_dark"
+        android:text="Add Game" />
+</LinearLayout>

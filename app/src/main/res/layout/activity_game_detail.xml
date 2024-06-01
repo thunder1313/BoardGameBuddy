@@ -14,7 +14,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/primary_light">
 
         <!-- Toolbar -->
         <com.google.android.material.appbar.AppBarLayout
@@ -43,10 +44,35 @@
             <ImageView
                 android:id="@+id/detailImage"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:scaleType="centerCrop"
+                android:layout_height="350dp"
+                android:padding="5dp"
+                android:scaleType="center"
                 android:src="@drawable/ic_launcher_background"
                 android:layout_gravity="center" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/detailDesigner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="5dp"
+                    android:text="game designer"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <TextView
+                    android:id="@+id/detailMaxPlayers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="5dp"
+                    android:text="max players"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <TextView
                 android:id="@+id/detailDescription"
@@ -55,6 +81,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:textSize="16dp"
                 android:text="game description"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textAlignment="center" />
@@ -73,6 +100,8 @@
                 android:layout_gravity="start|bottom"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/startup_dark"
+                app:tint="@color/primary_light"
                 android:src="@drawable/ic_add" />
 
             <!-- Floating Action Button Favorites (Bottom Right) -->
@@ -83,6 +112,8 @@
                 android:layout_gravity="end|bottom"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/startup_dark"
+                app:tint="@color/primary_light"
                 android:src="@drawable/ic_favorite_border" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
