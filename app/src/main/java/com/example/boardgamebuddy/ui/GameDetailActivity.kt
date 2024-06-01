@@ -28,6 +28,7 @@ class GameDetailActivity : AppCompatActivity() {
     private lateinit var userEmailTextView: TextView
 
     private var isFavorite: Boolean = false
+    private var isInCollection: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +89,7 @@ class GameDetailActivity : AppCompatActivity() {
         if (gameId != -1) {
             fetchBoardGame(gameId)
             setupFavoriteButton(gameId)
+            setupCollectionButton(gameId)  // Setup collection button
         } else {
             Toast.makeText(this, "Error loading game details", Toast.LENGTH_SHORT).show()
         }
@@ -110,15 +112,18 @@ class GameDetailActivity : AppCompatActivity() {
     }
 
     private fun updateUI(game: BoardGame) {
-        val detailImage = findViewById<ImageView>(R.id.detailImage)
-        val detailDescription = findViewById<TextView>(R.id.detailDescription)
         supportActionBar?.title = game.name
-        detailDescription.text = game.description
+
+        // Load image
+        val detailImage = findViewById<ImageView>(R.id.detailImage)
         Glide.with(this).load(game.imageUrl).into(detailImage)
+        // Load description
+        val detailDescription = findViewById<TextView>(R.id.detailDescription)
+        detailDescription.text = game.description
     }
 
     private fun setupFavoriteButton(gameId: Int) {
-        val fabFavorite = findViewById<FloatingActionButton>(R.id.fab)
+        val fabFavorite = findViewById<FloatingActionButton>(R.id.fab_favorite)
 
         // Check if the game is already a favorite
         val currentUser = auth.currentUser
@@ -168,6 +173,60 @@ class GameDetailActivity : AppCompatActivity() {
             fabFavorite.setImageResource(R.drawable.ic_favorite)
         } else {
             fabFavorite.setImageResource(R.drawable.ic_favorite_border)
+        }
+    }
+
+    private fun setupCollectionButton(gameId: Int) {
+        val fabCollection = findViewById<FloatingActionButton>(R.id.fab_collection)
+
+        // Check if the game is already in collection
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            db.collection("users").document(currentUser.uid)
+                .collection("collection").document(gameId.toString())
+                .get()
+                .addOnSuccessListener { document ->
+                    isInCollection = document.exists()
+                    updateCollectionButton(fabCollection)
+                }
+        }
+
+        fabCollection.setOnClickListener {
+            if (currentUser != null) {
+                val collectionRef = db.collection("users").document(currentUser.uid)
+                    .collection("collection").document(gameId.toString())
+                if (isInCollection) {
+                    collectionRef.delete()
+                        .addOnSuccessListener {
+                            isInCollection = false
+                            updateCollectionButton(fabCollection)
+                            Toast.makeText(this, "Removed from collection", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Failed to remove from collection: $e", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    collectionRef.set(hashMapOf("gameId" to gameId))
+                        .addOnSuccessListener {
+                            isInCollection = true
+                            updateCollectionButton(fabCollection)
+                            Toast.makeText(this, "Added to your collection", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Failed to add to collection: $e", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            } else {
+                Toast.makeText(this, "Please log in to use this feature", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun updateCollectionButton(fabCollection: FloatingActionButton) {
+        if (isInCollection) {
+            fabCollection.setImageResource(R.drawable.ic_add_box)
+        } else {
+            fabCollection.setImageResource(R.drawable.ic_add)
         }
     }
 
